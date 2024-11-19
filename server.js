@@ -42,3 +42,18 @@ app.get("/livro", (req, res) => {
         "genero": "Fantasia"
     });
 });
+
+// Exercise
+app.get("/posts/descricao/:descricao", (req, res) => {
+    const {descricao} = req.params;
+    console.log(descricao)
+
+    const result = data.posts.filter((element) => element.descricao.toUpperCase().includes(descricao.toUpperCase()));
+
+    if(result.length > 0){
+        res.status(200).json(result);
+    }
+    else {
+        res.status(400).send("Dado não encontrado.");
+    }
+});
