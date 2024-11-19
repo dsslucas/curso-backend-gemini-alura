@@ -1,6 +1,8 @@
 import express from "express"
+import data from "./data.js";
 
 const app = express();
+app.use(express.json());
 const port = 3003;
 
 app.listen(port, () => {
@@ -8,9 +10,28 @@ app.listen(port, () => {
 });
 
 // Route
-app.get("/api", (req, res) => {
-    res.status(200).send("A Torre Eiffel iluminada à noite, com milhares de luzes cintilando, criando um espetáculo mágico em Paris.");
+app.get("/posts", (req, res) => {
+    res.status(200).json(data.posts);
 });
+
+app.get("/post/:id", (req, res) => {
+    const { id } = req.params;
+
+    function findPostById(id) {
+        return data.posts.findIndex((post) => {
+            return post.id === Number(id);
+        })
+    }
+
+    const index = findPostById(id);
+
+    if(typeof data.posts[index] === 'undefined') {
+        res.status(400).send("Dado não encontrado.");
+    }
+    else {
+        res.status(200).json(data.posts[index]);
+    }
+})
 
 // Exercise
 app.get("/livro", (req, res) => {
