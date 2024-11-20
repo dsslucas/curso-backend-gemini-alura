@@ -1,17 +1,28 @@
 import express from "express"
 import data from "./data.js";
 
+import connectingDatabase from "./src/config/database.js";
+const connectDatabase = await connectingDatabase(process.env.KEY_MONGODB);
+
 const app = express();
 app.use(express.json());
 const port = 3003;
 
 app.listen(port, () => {
-    console.log(`Servidor executando na porta ${port}.`);
+    console.log(`Server running at port ${port}.`);
 });
 
+async function getAllPosts(){
+    const db = connectDatabase.db("imersao-instabytes");
+    const collection = db.collection("posts");
+
+    return collection.find().toArray();
+}
+
 // Route
-app.get("/posts", (req, res) => {
-    res.status(200).json(data.posts);
+app.get("/posts", async (req, res) => {
+    const data = await getAllPosts();
+    res.status(200).json(data);
 });
 
 app.get("/post/:id", (req, res) => {
@@ -57,3 +68,4 @@ app.get("/posts/descricao/:descricao", (req, res) => {
         res.status(400).send("Dado não encontrado.");
     }
 });
+
