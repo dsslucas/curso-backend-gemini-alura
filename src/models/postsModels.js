@@ -13,7 +13,7 @@ const postsModels = () => {
     const getPostById = async (id) => {
         const db = connectDatabase.db("imersao-instabytes");
         const collection = db.collection("posts");
-        await collection.findOne({_id: id});
+        return collection.findOne({ _id: id }, { projection: { title: 1, content: 1 } });
     }
 
     const getPostByDescription = async (description) => {
