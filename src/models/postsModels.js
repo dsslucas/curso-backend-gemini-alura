@@ -4,6 +4,12 @@ import connectingDatabase from "../config/database.js";
 const connectDatabase = await connectingDatabase(process.env.KEY_MONGODB);
 
 const postsModels = () => {
+    const post = async (data) => {
+        const db = connectDatabase.db("imersao-instabytes");
+        const collection = db.collection("posts");    
+        return collection.insertOne(data);
+    }
+
     const getAllPosts = async () => {
         const db = connectDatabase.db("imersao-instabytes");
         const collection = db.collection("posts");
@@ -23,7 +29,7 @@ const postsModels = () => {
     }
 
     return {
-        getAllPosts, getPostById, getPostByDescription
+        post, getAllPosts, getPostById, getPostByDescription
     }
 }
 

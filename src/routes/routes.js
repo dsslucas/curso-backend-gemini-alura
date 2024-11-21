@@ -5,12 +5,13 @@ import usersController from "../controllers/usersController.js";
 
 const routes = async (app) => {
     app.use(express.json());
-    const { findAllPosts, findPostById, findByDescription } = postsController();
+    const { registerNewPost, findAllPosts, findPostById, findByDescription } = postsController();
     const { getBook } = bookController();
     const { registerUser } = usersController();
 
     // Route
     app.get("/posts", findAllPosts);
+    app.post("/post", registerNewPost);
     app.get("/post/:id", findPostById);
 
     // Exercise Lesson 1
